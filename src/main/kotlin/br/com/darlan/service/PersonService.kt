@@ -1,6 +1,8 @@
 package br.com.darlan.service
 
+import br.com.darlan.data.vo.v1.PersonVO
 import br.com.darlan.exceptions.ResourceNotFoundException
+import br.com.darlan.mapper.DozerMapper
 import br.com.darlan.model.Person
 import br.com.darlan.repository.PersonRepository
 import org.springframework.stereotype.Service
@@ -15,60 +17,50 @@ class PersonService(
     private val logger = Logger.getLogger(PersonService::class.java.name)
 
 
-    fun findAll(): List<Person> {
+    fun findAll(): List<PersonVO> {
         logger.info("Finding all people!")
 
-        return repository.findAll()
+        return repository.findAll().let {
+            DozerMapper.parseListObjects(it, PersonVO::class.java)
+        }
 
     }
 
-    fun findById(id: Long): Person {
+    fun findById(id: Long): PersonVO {
         logger.info("Finding one person!")
 
         return repository
             .findById(id)
             .orElseThrow { ResourceNotFoundException("No records found this ID") }
+            .let {
+                DozerMapper.parseObject(it, PersonVO::class.java)
+            }
 
     }
 
-    fun create(person: Person): Person {
-        logger.info("Creating one person with name ${person.firstName}")
-        return repository.save(person)
+    fun create(personVO: PersonVO): PersonVO {
+        logger.info("Creating one person with name ${personVO.firstName}")
+
+        return personVO.let {
+            DozerMapper.parseObject(it, Person::class.java)
+        }.let { repository.save(it) }
+            .let { DozerMapper.parseObject(it, PersonVO::class.java) }
     }
 
-    fun update(person: Person): Person {
-        logger.info("Updating one person with ID ${person.id}")
-//        val entity = repository
-//            .findById(person.id!!)
-//            .orElseThrow { ResourceNotFoundException("No records for found this ID") }
-//            .copy(
-//                id = null,
-//                firstName = "",
-//                lastName = "",
-//                address = "",
-//                gender = ""
-//            )
-//            .let { repository.save(it) }
+    fun update(personVO: PersonVO): PersonVO {
+        logger.info("Updating one person with ID ${personVO.id}")
 
         return repository
-            .findById(person.id!!)
-            .orElseThrow { ResourceNotFoundException("No records for found this ID") }
-            .copy(
-                id = person.id,
-                firstName = person.firstName,
-                lastName = person.lastName,
-                address = person.address,
-                gender = person.gender
-            )
-            .let { repository.save(it) }
-
-
-//        entity.firstName = person.firstName
-//        entity.lastName = person.lastName
-//        entity.address = person.address
-//        entity.gender = person.gender
-//
-//        return repository.save(entity)
+            .findById(personVO.id!!)
+            .orElseThrow { ResourceNotFoundException("No records for found this ID") }.copy(
+                id = personVO.id,
+                firstName = personVO.firstName,
+                lastName = personVO.lastName,
+                address = personVO.address,
+                gender = personVO.gender
+            ).let {
+                DozerMapper.parseObject(it, PersonVO::class.java)
+            }
 
     }
 

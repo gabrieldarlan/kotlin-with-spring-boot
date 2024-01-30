@@ -1,6 +1,6 @@
 package br.com.darlan.controller
 
-import br.com.darlan.model.Person
+import br.com.darlan.data.vo.v1.PersonVO
 import br.com.darlan.service.PersonService
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -15,7 +15,7 @@ class PersonController(
     @GetMapping(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun findAll(): ResponseEntity<List<Person>> {
+    fun findAll(): ResponseEntity<List<PersonVO>> {
         return ResponseEntity.ok().body(service.findAll())
     }
 
@@ -23,7 +23,7 @@ class PersonController(
         value = ["/{id}"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<Person> {
+    fun findById(@PathVariable(value = "id") id: Long): ResponseEntity<PersonVO> {
         return ResponseEntity.ok().body(service.findById(id))
     }
 
@@ -31,7 +31,7 @@ class PersonController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun create(@RequestBody person: Person, uriBuilder: UriComponentsBuilder): ResponseEntity<Person> {
+    fun create(@RequestBody person: PersonVO, uriBuilder: UriComponentsBuilder): ResponseEntity<PersonVO> {
         val personCreated = service.create(person)
         val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.id).toUri()
         return ResponseEntity.created(uri).body(personCreated)
@@ -42,7 +42,7 @@ class PersonController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun update(@RequestBody person: Person): ResponseEntity<Person> {
+    fun update(@RequestBody person: PersonVO): ResponseEntity<PersonVO> {
         return ResponseEntity.ok().body(service.update(person))
     }
 
