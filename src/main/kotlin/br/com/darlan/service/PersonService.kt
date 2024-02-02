@@ -3,15 +3,18 @@ package br.com.darlan.service
 import br.com.darlan.data.vo.v1.PersonVO
 import br.com.darlan.exceptions.ResourceNotFoundException
 import br.com.darlan.mapper.DozerMapper
+import br.com.darlan.mapper.custom.PersonMapper
 import br.com.darlan.model.Person
 import br.com.darlan.repository.PersonRepository
 import org.springframework.stereotype.Service
 import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
+import br.com.darlan.data.vo.v2.PersonVO as PersonVOV2
 
 @Service
 class PersonService(
     private val repository: PersonRepository,
+    private val personMapper: PersonMapper
 ) {
     private val counter: AtomicLong = AtomicLong()
     private val logger = Logger.getLogger(PersonService::class.java.name)
@@ -70,8 +73,15 @@ class PersonService(
         repository.findById(id)
             .orElseThrow { ResourceNotFoundException("No records found for this ID") }
             .let { repository.delete(it) }
+    }
 
+    fun createV2(personVO: PersonVOV2): PersonVOV2 {
+        logger.info("Creating one person with name ${personVO.firstName}")
 
+        return personVO.let {
+            personMapper.mapVOToEntity(it)
+        }.let { repository.save(it) }
+            .let { personMapper.mapEntityToVO(it) }
     }
 
 }

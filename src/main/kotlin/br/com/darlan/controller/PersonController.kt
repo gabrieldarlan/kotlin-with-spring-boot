@@ -6,6 +6,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import br.com.darlan.data.vo.v2.PersonVO as PersonVOV2
 
 @RestController
 @RequestMapping(value = ["person"])
@@ -35,7 +36,17 @@ class PersonController(
         val personCreated = service.create(person)
         val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.id).toUri()
         return ResponseEntity.created(uri).body(personCreated)
+    }
 
+    @PostMapping(
+        value = ["/v2"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun createV2(@RequestBody person: PersonVOV2, uriBuilder: UriComponentsBuilder): ResponseEntity<PersonVOV2> {
+        val personCreated: PersonVOV2 = service.createV2(person)
+        val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.id).toUri()
+        return ResponseEntity.created(uri).body(personCreated)
     }
 
     @PutMapping(
