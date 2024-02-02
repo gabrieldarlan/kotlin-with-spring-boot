@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import br.com.darlan.data.vo.v2.PersonVO as PersonVOV2
 
 @RestController
-@RequestMapping(value = ["person"])
+@RequestMapping(value = ["/api/person/v1"])
 class PersonController(
     private val service: PersonService,
 ) {

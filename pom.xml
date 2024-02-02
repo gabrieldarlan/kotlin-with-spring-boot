@@ -18,8 +18,8 @@
         <kotlin.version>1.9.10</kotlin.version>
         <!--        <dozer.version>6.5.2</dozer.version>-->
         <dozer.version>6.4.1</dozer.version>
-<!--        <maven.compiler.source>1.8</maven.compiler.source>-->
-<!--        <maven.compiler.target>1.8</maven.compiler.target>-->
+        <!--        <maven.compiler.source>1.8</maven.compiler.source>-->
+        <!--        <maven.compiler.target>1.8</maven.compiler.target>-->
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 
     </properties>
@@ -51,6 +51,15 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -116,6 +125,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
         </plugins>
     </build>
 
