@@ -8,7 +8,7 @@ import java.util.*
 @Service
 class PersonMapper {
     fun mapEntityToVO(person: Person) = PersonVO(
-        id = person.id!!,
+        key = person.id!!,
         firstName = person.firstName,
         lastName = person.lastName,
         address = person.address,
@@ -17,7 +17,7 @@ class PersonMapper {
     )
 
     fun mapVOToEntity(person: PersonVO) = Person(
-        id = person.id,
+        id = person.key,
         firstName = person.firstName,
         lastName = person.lastName,
         address = person.address,

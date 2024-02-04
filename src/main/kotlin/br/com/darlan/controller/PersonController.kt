@@ -34,7 +34,7 @@ class PersonController(
     )
     fun create(@RequestBody person: PersonVO, uriBuilder: UriComponentsBuilder): ResponseEntity<PersonVO> {
         val personCreated = service.create(person)
-        val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.id).toUri()
+        val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.key).toUri()
         return ResponseEntity.created(uri).body(personCreated)
     }
 
@@ -45,7 +45,7 @@ class PersonController(
     )
     fun createV2(@RequestBody person: PersonVOV2, uriBuilder: UriComponentsBuilder): ResponseEntity<PersonVOV2> {
         val personCreated: PersonVOV2 = service.createV2(person)
-        val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.id).toUri()
+        val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.key).toUri()
         return ResponseEntity.created(uri).body(personCreated)
     }
 
