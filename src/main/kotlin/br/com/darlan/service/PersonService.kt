@@ -2,6 +2,7 @@ package br.com.darlan.service
 
 import br.com.darlan.controller.PersonController
 import br.com.darlan.data.vo.v1.PersonVO
+import br.com.darlan.exceptions.RequiredObjectIsNullException
 import br.com.darlan.exceptions.ResourceNotFoundException
 import br.com.darlan.mapper.DozerMapper
 import br.com.darlan.model.Person
@@ -48,7 +49,10 @@ class PersonService(
         return personVO
     }
 
-    fun create(personVO: PersonVO): PersonVO {
+    fun create(personVO: PersonVO?): PersonVO {
+        if (personVO == null) throw RequiredObjectIsNullException()
+
+
         logger.info("Creating one person with name ${personVO.firstName}")
 
         return personVO.let {
@@ -62,7 +66,9 @@ class PersonService(
             }
     }
 
-    fun update(personVO: PersonVO): PersonVO {
+    fun update(personVO: PersonVO?): PersonVO {
+        if (personVO == null) throw RequiredObjectIsNullException()
+
         logger.info("Updating one person with ID ${personVO.key}")
 
         return repository
