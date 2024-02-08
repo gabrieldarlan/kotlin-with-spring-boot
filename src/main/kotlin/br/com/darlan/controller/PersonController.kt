@@ -6,7 +6,6 @@ import br.com.darlan.util.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
-import br.com.darlan.data.vo.v2.PersonVO as PersonVOV2
 
 @RestController
 @RequestMapping(value = ["/api/person/v1"])
@@ -38,16 +37,16 @@ class PersonController(
         return ResponseEntity.created(uri).body(personCreated)
     }
 
-    @PostMapping(
-        value = ["/v2"],
-        consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML],
-        produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML]
-    )
-    fun createV2(@RequestBody person: PersonVOV2, uriBuilder: UriComponentsBuilder): ResponseEntity<PersonVOV2> {
-        val personCreated: PersonVOV2 = service.createV2(person)
-        val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.key).toUri()
-        return ResponseEntity.created(uri).body(personCreated)
-    }
+//    @PostMapping(
+//        value = ["/v2"],
+//        consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML],
+//        produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML]
+//    )
+//    fun createV2(@RequestBody person: PersonVOV2, uriBuilder: UriComponentsBuilder): ResponseEntity<PersonVOV2> {
+//        val personCreated: PersonVOV2 = service.createV2(person)
+//        val uri = uriBuilder.path("person/{id}").buildAndExpand(personCreated.key).toUri()
+//        return ResponseEntity.created(uri).body(personCreated)
+//    }
 
     @PutMapping(
         consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML],
